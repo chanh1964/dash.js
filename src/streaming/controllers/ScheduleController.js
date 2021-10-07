@@ -64,7 +64,8 @@ function ScheduleController(config) {
         lastInitializedQuality,
         switchTrack,
         initSegmentRequired,
-        checkPlaybackQuality;
+        checkPlaybackQuality,
+        isPrebufferingCompleted;
 
     function setup() {
         logger = Debug(context).getInstance().getLogger(instance);
@@ -223,10 +224,14 @@ function ScheduleController(config) {
         }
         const bufferLevel = dashMetrics.getCurrentBufferLevel(type);        
         if (bufferLevel < getBufferTarget()) {
+            if (isPrebufferingCompleted) {
+                isPrebufferingCompleted = false;
+            }
             return true;
         }
-        if (playbackController.isPaused() && type === Constants.VIDEO) {
-            bufferController.setIsBufferingCompleted(true);
+        if (playbackController.isPaused() && !isPrebufferingCompleted && type === Constants.VIDEO) {
+            eventBus.trigger(Events.BUFFERING_COMPLETED, {}, { streamId: streamInfo.id, mediaType: type });
+            isPrebufferingCompleted = true;
         }
         return false;
     }
@@ -420,6 +425,7 @@ function ScheduleController(config) {
         topQualityIndex = NaN;
         switchTrack = false;
         initSegmentRequired = false;
+        isPrebufferingCompleted = false;
     }
 
     function reset() {
