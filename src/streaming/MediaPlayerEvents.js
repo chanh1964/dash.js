@@ -368,6 +368,13 @@ class MediaPlayerEvents extends EventsBase {
         this.PLAYBACK_WAITING = 'playbackWaiting';
 
         /**
+         * Triggered when the video element's buffer reaches the target buffer while playback is paused.
+         * Check mediaType in payload to determine type (Video, Audio, FragmentedText).
+         * @event MediaPlayerEvents#PREBUFFERING_COMPLETED
+         */
+        this.PREBUFFERING_COMPLETED = 'prebufferingCompleted';
+
+        /**
          * Manifest validity changed - As a result of an MPD validity expiration event.
          * @event MediaPlayerEvents#MANIFEST_VALIDITY_CHANGED
          */

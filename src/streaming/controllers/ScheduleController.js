@@ -221,8 +221,14 @@ function ScheduleController(config) {
         if (!type || !currentRepresentationInfo) {
             return true;
         }
-        const bufferLevel = dashMetrics.getCurrentBufferLevel(type);
-        return bufferLevel < getBufferTarget();
+        const bufferLevel = dashMetrics.getCurrentBufferLevel(type);        
+        if (bufferLevel < getBufferTarget()) {
+            return true;
+        }
+        if (playbackController.isPaused() && type === Constants.VIDEO) {
+            bufferController.setIsBufferingCompleted(true);
+        }
+        return false;
     }
 
     /**

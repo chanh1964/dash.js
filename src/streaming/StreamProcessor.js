@@ -88,7 +88,8 @@ function StreamProcessor(config) {
         manifestUpdateInProgress,
         dashHandler,
         segmentsController,
-        bufferingTime;
+        bufferingTime,
+        isLastSegmentRequested;
 
     function setup() {
         logger = Debug(context).getInstance().getLogger(instance);
@@ -190,6 +191,7 @@ function StreamProcessor(config) {
 
         bufferingTime = 0;
         shouldUseExplicitTimeForRequest = false;
+        isLastSegmentRequested = false;
     }
 
     function getStreamId() {
@@ -451,7 +453,7 @@ function StreamProcessor(config) {
         }
 
         // Check if the media is finished. If so, no need to schedule another request
-        const isLastSegmentRequested = dashHandler.isLastSegmentRequested(representation, bufferingTime);
+        isLastSegmentRequested = dashHandler.isLastSegmentRequested(representation, bufferingTime);
         if (isLastSegmentRequested) {
             const segmentIndex = dashHandler.getCurrentIndex();
             logger.debug(`Segment requesting for stream ${streamInfo.id} has finished`);
@@ -924,6 +926,10 @@ function StreamProcessor(config) {
         return bufferController ? bufferController.getBufferLevel() : 0;
     }
 
+    function getIsLastSegmentRequested() {
+        return isLastSegmentRequested;
+    }
+
     /**
      * Probe the next request. This is used in the CMCD model to get information about the upcoming request. Note: No actual request is performed here.
      * @return {FragmentRequest|null}
@@ -1177,6 +1183,7 @@ function StreamProcessor(config) {
         getRepresentationController,
         getRepresentationInfo,
         getBufferLevel,
+        getIsLastSegmentRequested,
         isBufferingCompleted,
         createBufferSinks,
         updateStreamInfo,

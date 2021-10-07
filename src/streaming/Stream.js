@@ -42,6 +42,7 @@ import DashJSError from './vo/DashJSError';
 import BoxParser from './utils/BoxParser';
 import URLUtils from './utils/URLUtils';
 import BlacklistController from './controllers/BlacklistController';
+import mediaPlayerEvents from './MediaPlayerEvents';
 
 
 const MEDIA_TYPES = [Constants.VIDEO, Constants.AUDIO, Constants.TEXT, Constants.MUXED, Constants.IMAGE];
@@ -755,7 +756,7 @@ function Stream(config) {
         return null;
     }
 
-    function onBufferingCompleted() {
+    function onBufferingCompleted() {        
         let processors = getProcessors();
         const ln = processors.length;
 
@@ -766,11 +767,16 @@ function Stream(config) {
 
         // if there is at least one buffer controller that has not completed buffering yet do nothing
         for (let i = 0; i < ln; i++) {
+            let mediaType = processors[i].getType();
             //if audio or video buffer is not buffering completed state, do not send STREAM_BUFFERING_COMPLETED
-            if (!processors[i].isBufferingCompleted() && (processors[i].getType() === Constants.AUDIO || processors[i].getType() === Constants.VIDEO)) {
-                logger.debug('onBufferingCompleted - One streamProcessor has finished but', processors[i].getType(), 'one is not buffering completed');
+            if (!processors[i].isBufferingCompleted() && (mediaType === Constants.AUDIO || mediaType === Constants.VIDEO)) {
+                logger.debug('onBufferingCompleted - One streamProcessor has finished but', mediaType, 'one is not buffering completed');
                 return;
             }
+            if (!processors[i].getIsLastSegmentRequested() && mediaType === Constants.VIDEO) {
+                eventBus.trigger(mediaPlayerEvents.PREBUFFERING_COMPLETED, { streamInfo: streamInfo }, { mediaType: mediaType });                    
+                return;
+            }            
         }
 
         logger.debug('onBufferingCompleted - trigger STREAM_BUFFERING_COMPLETED');
