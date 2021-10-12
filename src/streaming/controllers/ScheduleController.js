@@ -193,8 +193,7 @@ function ScheduleController(config) {
      */
     function _shouldClearScheduleTimer() {
         try {
-            return (((type === Constants.TEXT) && !textController.isTextEnabled()) ||
-                    (playbackController.isPaused() && (!playbackController.getStreamController().getInitialPlayback() || !playbackController.getStreamController().getAutoPlay()) && !settings.get().streaming.scheduling.scheduleWhilePaused));
+            return ((type === Constants.TEXT) && !textController.isTextEnabled());                    
         } catch (e) {
             return false;
         }
@@ -207,10 +206,19 @@ function ScheduleController(config) {
      */
     function _shouldScheduleNextRequest() {
         try {
-            return currentRepresentationInfo && (isNaN(lastInitializedQuality) || switchTrack || hasTopQualityChanged() || _shouldBuffer());
+            return currentRepresentationInfo && (isNaN(lastInitializedQuality) || switchTrack || hasTopQualityChanged() || _shouldBuffer()) && _shouldScheduleWhilePaused();
         } catch (e) {
             return false;
         }
+    }
+
+    /**
+     * Check if we can start scheduling the next request
+     * @return {boolean}
+     * @private
+     */
+    function _shouldScheduleWhilePaused() {
+        return !(playbackController.isPaused() && (!playbackController.getStreamController().getInitialPlayback() || !playbackController.getStreamController().getAutoPlay()) && !settings.get().streaming.scheduling.scheduleWhilePaused);
     }
 
     /**
