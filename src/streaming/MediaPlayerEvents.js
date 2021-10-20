@@ -212,6 +212,12 @@ class MediaPlayerEvents extends EventsBase {
         this.STREAM_TEARDOWN_COMPLETE = 'streamTeardownComplete';
 
         /**
+         * Triggered when all segments have been downloaded.
+         * @event MediaPlayerEvents#STREAM_BUFFERING_COMPLETED
+         */
+        this.STREAM_BUFFERING_COMPLETED = 'streamBufferingCompleted';
+
+        /**
          * Triggered once all text tracks detected in the MPD are added to the video element.
          * @event MediaPlayerEvents#TEXT_TRACKS_ADDED
          */

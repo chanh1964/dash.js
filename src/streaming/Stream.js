@@ -783,7 +783,7 @@ function Stream(config) {
 
         logger.debug('onBufferingCompleted - trigger STREAM_BUFFERING_COMPLETED');
         hasFinishedBuffering = true;
-        eventBus.trigger(Events.STREAM_BUFFERING_COMPLETED, { streamInfo: streamInfo }, { streamInfo });
+        eventBus.trigger(mediaPlayerEvents.STREAM_BUFFERING_COMPLETED, { streamInfo: streamInfo }, { streamInfo });
     }
 
     function onDataUpdateCompleted(e) {

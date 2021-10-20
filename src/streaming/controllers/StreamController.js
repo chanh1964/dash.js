@@ -177,7 +177,7 @@ function StreamController() {
         }
 
         eventBus.on(Events.MANIFEST_UPDATED, _onManifestUpdated, instance);
-        eventBus.on(Events.STREAM_BUFFERING_COMPLETED, _onStreamBufferingCompleted, instance);
+        eventBus.on(MediaPlayerEvents.STREAM_BUFFERING_COMPLETED, _onStreamBufferingCompleted, instance);
         eventBus.on(Events.TIME_SYNCHRONIZATION_COMPLETED, _onTimeSyncCompleted, instance);
         eventBus.on(Events.WALLCLOCK_TIME_UPDATED, _onWallclockTimeUpdated, instance);
         eventBus.on(Events.CURRENT_TRACK_CHANGED, _onCurrentTrackChanged, instance);
@@ -200,7 +200,7 @@ function StreamController() {
         }
 
         eventBus.off(Events.MANIFEST_UPDATED, _onManifestUpdated, instance);
-        eventBus.off(Events.STREAM_BUFFERING_COMPLETED, _onStreamBufferingCompleted, instance);
+        eventBus.off(MediaPlayerEvents.STREAM_BUFFERING_COMPLETED, _onStreamBufferingCompleted, instance);
         eventBus.off(Events.TIME_SYNCHRONIZATION_COMPLETED, _onTimeSyncCompleted, instance);
         eventBus.off(Events.WALLCLOCK_TIME_UPDATED, _onWallclockTimeUpdated, instance);
         eventBus.off(Events.CURRENT_TRACK_CHANGED, _onCurrentTrackChanged, instance);
