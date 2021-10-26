@@ -1109,10 +1109,6 @@ function StreamProcessor(config) {
     }
 
     function _bufferClearedForNonReplacement() {
-        const time = playbackController.getTime();
-        const targetTime = bufferController.getContinuousBufferTimeForTargetTime(time);
-
-        setExplicitBufferingTime(targetTime);
         scheduleController.startScheduleTimer();
     }
 
