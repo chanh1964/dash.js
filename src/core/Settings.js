@@ -422,6 +422,8 @@ import {HTTPRequest} from '../streaming/vo/metrics/HTTPRequest';
  * Default timeout between two consecutive low-latency segment scheduling attempts
  * @property {boolean} [scheduleWhilePaused=true]
  * Set to true if you would like dash.js to keep downloading fragments in the background when the video element is paused.
+ * @property {boolean} [autoFetchSegments=true]
+ * Set to true if you would like dash.js to keep downloading fragments of the video.
  */
 
 /**
@@ -815,7 +817,8 @@ function Settings() {
             scheduling: {
                 defaultTimeout: 500,
                 lowLatencyTimeout: 0,
-                scheduleWhilePaused: true
+                scheduleWhilePaused: true,
+                autoFetchSegments: true
             },
             text: {
                 defaultEnabled: true

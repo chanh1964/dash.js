@@ -206,7 +206,7 @@ function ScheduleController(config) {
      */
     function _shouldScheduleNextRequest() {
         try {
-            return currentRepresentationInfo && (isNaN(lastInitializedQuality) || switchTrack || hasTopQualityChanged() || _shouldBuffer()) && _shouldScheduleWhilePaused();
+            return currentRepresentationInfo && (isNaN(lastInitializedQuality) || switchTrack || hasTopQualityChanged() || _shouldBuffer()) && _shouldScheduleWhilePaused() && settings.get().streaming.scheduling.autoFetchSegments;
         } catch (e) {
             return false;
         }
